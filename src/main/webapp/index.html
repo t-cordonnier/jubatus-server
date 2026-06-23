@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jubatus Server - Message Aléatoire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        h1 { color: #333; margin-bottom: 30px; }
+        .message {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover { background-color: #1565c0; }
+        .api-section { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .api-url {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .api-result {
+            font-family: monospace;
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Message Aléatoire</h1>
+        <div class="message" id="message">Cliquez sur le bouton pour obtenir un message</div>
+        <button onclick="getRandomMessage()">Obtenir un message aléatoire</button>
+        <div class="api-section">
+            <h2>API REST</h2>
+            <p>Vous pouvez aussi obtenir un message via l'API :</p>
+            <div class="api-url">/api/random-message</div>
+            <button onclick="fetchFromApi()">Tester l'API</button>
+            <div class="api-result" id="apiResult">Résultat de l'API apparaîtra ici</div>
+        </div>
+    </div>
+    <script>
+        const messages = [
+            "Bonjour et bienvenue sur Jubatus Server!",
+            "La vie est une aventure, profitez-en!",
+            "Un message aléatoire pour égayer votre journée.",
+            "Jakarta EE, la puissance de Java pour le web.",
+            "Le hasard fait bien les choses.",
+            "Programmer, c'est créer de la magie avec du code.",
+            "Chaque jour est une nouvelle opportunité.",
+            "Restez curieux et continuez à apprendre.",
+            "L'important n'est pas la destination, mais le voyage.",
+            "Un petit message pour un grand sourire."
+        ];
+        function getRandomMessage() {
+            const idx = Math.floor(Math.random() * messages.length);
+            document.getElementById('message').textContent = messages[idx];
+        }
+        async function fetchFromApi() {
+            try {
+                const resp = await fetch('/api/random-message');
+                const data = await resp.json();
+                document.getElementById('apiResult').textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                document.getElementById('apiResult').textContent = 'Erreur: ' + e.message;
+            }
+        }
+        window.onload = () => getRandomMessage();
+    </script>
+</body>
+</html>
